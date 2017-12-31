@@ -1,1 +1,6 @@
 com\mycompany\climacidade\Controller.class
+com\mycompany\climacidade\climafonte\ClimaFonteInterface.class
+com\mycompany\climacidade\Temperatura.class
+com\mycompany\climacidade\Cidade.class
+.netbeans_automatic_build
+com\mycompany\climacidade\climafonte\ClimaFonteopenweathermap.class
