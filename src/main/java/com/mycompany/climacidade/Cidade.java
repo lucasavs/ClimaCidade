@@ -35,6 +35,10 @@ public class Cidade {
         this.temperaturas = temperaturas;
     }
     
+    /**
+     * Retorna a cidade em formato JSON com suas temperaturas
+     * @return 
+     */
     public String toString(){
         String stringArrayTemperaturas = ""; 
         for(Temperatura temperatura : temperaturas){

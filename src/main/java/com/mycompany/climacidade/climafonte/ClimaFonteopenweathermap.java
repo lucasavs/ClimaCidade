@@ -25,9 +25,18 @@ import java.util.List;
  */
 public class ClimaFonteopenweathermap implements ClimaFonteInterface {
 
+    private static final String OPENWEATHER_KEY = "bd4e72aabc90d2656d325985bee2e76f";
+    
+    /**
+     * 
+     * @param nomeBusca
+     * @return
+     * @throws IOException
+     * @throws MalformedURLException 
+     */
     @Override
     public Cidade getCidade(String nomeBusca) throws IOException, MalformedURLException {
-        String sURL = "http://api.openweathermap.org/data/2.5/find?q=" + nomeBusca +"&units=metric&appid=bd4e72aabc90d2656d325985bee2e76f"; //just a string
+        String sURL = "http://api.openweathermap.org/data/2.5/find?units=metric&q=" + nomeBusca +"&appid="+OPENWEATHER_KEY; //just a string
 
         // Connect to the URL using java's native library
         URL url = new URL(sURL);
