@@ -52,8 +52,8 @@ public class Controller {
      */
     @GET
     @Path("/cities/{param}/temperatures")
-    //@Produces(MediaType.APPLICATION_JSON)
-    @Produces("text/plain")
+    @Produces(MediaType.APPLICATION_JSON)
+    //@Produces("text/plain")
     public Response temperaturasCidade(@PathParam("param") String message){
         Cidade cidade;
         try {

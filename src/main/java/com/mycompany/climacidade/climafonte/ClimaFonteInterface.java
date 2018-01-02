@@ -6,6 +6,7 @@
 package com.mycompany.climacidade.climafonte;
 
 import com.mycompany.climacidade.Cidade;
+import com.mycompany.climacidade.Temperatura;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -15,4 +16,5 @@ import java.net.MalformedURLException;
  */
 public interface ClimaFonteInterface {
     public Cidade getCidade(String cidade) throws IOException,MalformedURLException;
+    public Temperatura getTemperatura(String cidade) throws IOException,MalformedURLException;
 }

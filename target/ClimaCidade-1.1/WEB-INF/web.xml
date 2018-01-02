@@ -25,4 +25,10 @@
       <servlet-name>rest</servlet-name>
       <url-pattern>/*</url-pattern>
     </servlet-mapping>
+    <listener>
+    <listener-class>
+            com.mycompany.climacidade.AtualizacaoCron
+        </listener-class>
+  </listener>
+
 </web-app>

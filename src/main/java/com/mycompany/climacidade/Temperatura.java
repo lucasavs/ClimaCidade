@@ -15,7 +15,16 @@ public class Temperatura {
     
     private float graus;
     private LocalDate dataMedicao; //teste
+    private int cidade_id;
 
+    public int getCidade_id() {
+        return cidade_id;
+    }
+
+    public void setCidade_id(int cidade_id) {
+        this.cidade_id = cidade_id;
+    }
+    
     public Temperatura(float graus) {
         this.graus = graus;
         this.dataMedicao = LocalDate.now();
@@ -32,6 +41,13 @@ public class Temperatura {
     public String getDataMedicao(){
         return dataMedicao.toString();
     }
+
+    @Override
+    public String toString() {
+        return "\"date\":\"" + dataMedicao + "\" ,\"temperature\":\"" + dataMedicao + "\" }" ;
+    }
+    
+    
     
     
 }

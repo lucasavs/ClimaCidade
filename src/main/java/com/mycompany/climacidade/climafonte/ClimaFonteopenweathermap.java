@@ -26,6 +26,7 @@ import java.util.List;
 public class ClimaFonteopenweathermap implements ClimaFonteInterface {
 
     private static final String OPENWEATHER_KEY = "bd4e72aabc90d2656d325985bee2e76f";
+    private static final String OPENWEATHER_URL = "http://api.openweathermap.org/data/2.5/find?units=metric&appid="+OPENWEATHER_KEY+"&q=";
     
     /**
      * 
@@ -36,27 +37,41 @@ public class ClimaFonteopenweathermap implements ClimaFonteInterface {
      */
     @Override
     public Cidade getCidade(String nomeBusca) throws IOException, MalformedURLException {
-        String sURL = "http://api.openweathermap.org/data/2.5/find?units=metric&q=" + nomeBusca +"&appid="+OPENWEATHER_KEY; //just a string
+        String sURL = OPENWEATHER_URL + nomeBusca; //just a string
 
-        // Connect to the URL using java's native library
         URL url = new URL(sURL);
         HttpURLConnection request = (HttpURLConnection) url.openConnection();
         request.connect();
 
-        // Convert to a JSON object to print data
         JsonParser jp = new JsonParser(); //from gson
         JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
         JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object. 
-        //zipcode = rootobj.get("city").getAsString(); //just grab the zipcode
         String nomeCidade = rootobj.getAsJsonArray("list").get(0).getAsJsonObject().get("name").toString();
-        float graus = rootobj.getAsJsonArray("list").get(0).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsFloat();
+        //float graus = rootobj.getAsJsonArray("list").get(0).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsFloat();
         
         Cidade cidade = new Cidade (nomeCidade);
-        Temperatura temperatura = new Temperatura(graus);
-        List<Temperatura> temperaturas = new ArrayList<>();
-        temperaturas.add(temperatura);
-        cidade.setTemperaturas(temperaturas);
+        //Temperatura temperatura = new Temperatura(graus);
+        //List<Temperatura> temperaturas = new ArrayList<>();
+        //temperaturas.add(temperatura);
+        //cidade.setTemperaturas(temperaturas);
         return cidade;
+    }
+
+    @Override
+    public Temperatura getTemperatura(String nomeBusca) throws IOException, MalformedURLException {
+        String sURL = OPENWEATHER_URL + nomeBusca; //just a string
+
+        URL url = new URL(sURL);
+        HttpURLConnection request = (HttpURLConnection) url.openConnection();
+        request.connect();
+
+        JsonParser jp = new JsonParser(); //from gson
+        JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
+        JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object. 
+        float graus = rootobj.getAsJsonArray("list").get(0).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsFloat();
+        
+        Temperatura temperatura = new Temperatura(graus);
+        return temperatura;
     }
 
 }

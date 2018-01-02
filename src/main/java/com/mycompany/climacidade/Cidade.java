@@ -14,6 +14,15 @@ import java.util.List;
 public class Cidade {
     private List<Temperatura> temperaturas;
     private String nome;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Cidade (String nome){
         this.nome = nome;
@@ -44,6 +53,10 @@ public class Cidade {
         for(Temperatura temperatura : temperaturas){
             stringArrayTemperaturas += "\"date\" : \"" + temperatura.getDataMedicao() + "\", \"temperature\" : \"" + temperatura.getGraus() + "\"";
         }
-        return "{\"name\":"+getNome()+", \"temperature\":[" + stringArrayTemperaturas + "]}";
+        return "{\"name\":"+getNome()+", \"temperature\":[" + temperaturasToString() + "]}";
+    }
+    
+    private String temperaturasToString (){
+        return String.join(",", temperaturas.toString());
     }
 }
