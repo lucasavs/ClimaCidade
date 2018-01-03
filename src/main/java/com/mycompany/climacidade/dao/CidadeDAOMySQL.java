@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -69,13 +70,45 @@ public class CidadeDAOMySQL implements CidadeDAO {
     }
 
     @Override
-    public void deleteTemperaturas(Cidade cidade) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Temperatura> getTemperatura(Cidade cidade) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Cidade> getTemperaturasAtuais() {
+        Cidade cidade;
+        Temperatura temperatura;
+        List<Cidade> listaCidade = new ArrayList<>();
+        List<Temperatura> temperaturas;
+        String query = "SELECT t.*, c.nome\n" +
+                        "FROM temperatura t\n" +
+                        "INNER JOIN\n" +
+                        "    (SELECT cidade_id, MAX(data_hora_registro) AS MaxDataHora\n" +
+                        "    FROM temperatura\n" +
+                        "    GROUP BY cidade_id) t1 \n" +
+                        "ON t.cidade_id = t1.cidade_id \n" +
+                        "AND t.data_hora_registro = t1.MaxDataHora\n" +
+                        "INNER JOIN cidade c on c.id = t.cidade_id " +
+                        "ORDER BY data_hora_registro DESC";
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            
+            while(resultSet.next()){
+                cidade = new Cidade(resultSet.getString("nome"));
+                temperatura = new Temperatura(resultSet.getFloat("grau"));
+                temperaturas = new ArrayList<>();
+                
+                Timestamp dataMedicao = resultSet.getTimestamp("data_hora_registro");
+                temperatura.setDataMedicao(dataMedicao.toLocalDateTime());
+                temperaturas.add(temperatura);
+                
+                cidade.setTemperaturas(temperaturas);
+                
+                listaCidade.add(cidade);
+            
+            }            
+        } catch (SQLException ex) {
+            Logger.getLogger(CidadeDAOMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CidadeDAOMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listaCidade;
     }
 
     @Override

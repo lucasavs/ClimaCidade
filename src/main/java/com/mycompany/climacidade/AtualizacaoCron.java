@@ -12,18 +12,17 @@ package com.mycompany.climacidade;
 import com.mycompany.climacidade.climafonte.ClimaFonteopenweathermap;
 import com.mycompany.climacidade.dao.CidadeDAO;
 import com.mycompany.climacidade.dao.TemperaturaDAO;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 public class AtualizacaoCron implements ServletContextListener {
 
     private Thread t = null;
-    private ServletContext context;
-    private static final int TEMPO_ATUALIZACAO_TEMPERATURA = 600000; //dez minutos
+    private static final int TEMPO_ATUALIZACAO_TEMPERATURA = 60000; //um minutos
 
     @Override
     public void contextInitialized(ServletContextEvent contextEvent) {
@@ -46,7 +45,7 @@ public class AtualizacaoCron implements ServletContextListener {
                             temperaturaDAO.createTemperatura(temperatura);
                         }
                         
-                        System.out.println("Pesquisa concluida com sucesso. " + listaCidades.size() + " Cidades devem ter suas temperaturas atualizadas");
+                        System.out.println(LocalDateTime.now().toString() + " - Pesquisa concluida com sucesso. " + listaCidades.size() + " Cidades devem ter suas temperaturas atualizadas");
                         Thread.sleep(TEMPO_ATUALIZACAO_TEMPERATURA);
                     }
                 } catch (InterruptedException ex) {
@@ -59,9 +58,6 @@ public class AtualizacaoCron implements ServletContextListener {
             }
         };
         t.start();
-        context = contextEvent.getServletContext();
-        // you can set a context variable just like this
-        context.setAttribute("TEST", "TEST_VALUE");
     }
 
     @Override

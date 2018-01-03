@@ -55,7 +55,7 @@ public class Cidade {
             stringArrayTemperaturas += "\"date\" : \"" + temperatura.getDataMedicao() + "\", \"temperature\" : \"" + temperatura.getGraus() + "\"";
         }
         */
-        return "{\"name\":"+getNome()+", \"temperature\":" + temperaturasToString() + "}";
+        return "{\"name\":\""+getNome()+"\", \"temperature\":" + temperaturasToString() + "}";
     }
     
     private String temperaturasToString (){

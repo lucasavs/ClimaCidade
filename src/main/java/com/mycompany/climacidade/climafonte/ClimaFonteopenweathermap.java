@@ -46,14 +46,14 @@ public class ClimaFonteopenweathermap implements ClimaFonteInterface {
         JsonParser jp = new JsonParser(); //from gson
         JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
         JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object. 
+        
+        if(0 == rootobj.get("count").getAsInt()){
+            return null;
+        }
+        
         String nomeCidade = rootobj.getAsJsonArray("list").get(0).getAsJsonObject().get("name").toString();
-        //float graus = rootobj.getAsJsonArray("list").get(0).getAsJsonObject().get("main").getAsJsonObject().get("temp").getAsFloat();
         
         Cidade cidade = new Cidade (nomeCidade);
-        //Temperatura temperatura = new Temperatura(graus);
-        //List<Temperatura> temperaturas = new ArrayList<>();
-        //temperaturas.add(temperatura);
-        //cidade.setTemperaturas(temperaturas);
         return cidade;
     }
 

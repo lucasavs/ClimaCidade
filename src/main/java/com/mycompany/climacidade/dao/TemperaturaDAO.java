@@ -16,4 +16,5 @@ import java.util.List;
 public interface TemperaturaDAO {
     public void createTemperatura(Temperatura temperatura);
     public List<Temperatura> getTemperaturasRecentes (Cidade cidade);
+    public void deleteTemperaturas (Cidade cidade);
 }

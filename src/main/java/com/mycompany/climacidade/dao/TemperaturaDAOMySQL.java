@@ -73,5 +73,15 @@ public class TemperaturaDAOMySQL implements TemperaturaDAO{
         }
         return temperaturas;
     }
+
+    @Override
+    public void deleteTemperaturas(Cidade cidade) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("DELETE FROM temperatura WHERE cidade_id = " + cidade.getId());
+        } catch (SQLException ex) {
+            Logger.getLogger(CidadeDAOMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }
