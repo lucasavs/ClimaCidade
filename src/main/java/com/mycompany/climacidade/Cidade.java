@@ -49,11 +49,13 @@ public class Cidade {
      * @return 
      */
     public String toString(){
-        String stringArrayTemperaturas = ""; 
+        //String stringArrayTemperaturas = ""; 
+        /*
         for(Temperatura temperatura : temperaturas){
             stringArrayTemperaturas += "\"date\" : \"" + temperatura.getDataMedicao() + "\", \"temperature\" : \"" + temperatura.getGraus() + "\"";
         }
-        return "{\"name\":"+getNome()+", \"temperature\":[" + temperaturasToString() + "]}";
+        */
+        return "{\"name\":"+getNome()+", \"temperature\":" + temperaturasToString() + "}";
     }
     
     private String temperaturasToString (){

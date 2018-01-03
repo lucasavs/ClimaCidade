@@ -5,7 +5,9 @@
  */
 package com.mycompany.climacidade.dao;
 
+import com.mycompany.climacidade.Cidade;
 import com.mycompany.climacidade.Temperatura;
+import java.util.List;
 
 /**
  *
@@ -13,4 +15,5 @@ import com.mycompany.climacidade.Temperatura;
  */
 public interface TemperaturaDAO {
     public void createTemperatura(Temperatura temperatura);
+    public List<Temperatura> getTemperaturasRecentes (Cidade cidade);
 }

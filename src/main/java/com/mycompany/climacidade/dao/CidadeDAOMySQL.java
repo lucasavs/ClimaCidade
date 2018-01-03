@@ -98,4 +98,29 @@ public class CidadeDAOMySQL implements CidadeDAO {
         return listaCidade;
     }
 
+    @Override
+    public Cidade getCidade(String nome) {
+        Cidade cidade = null;
+        String query = "SELECT nome, id FROM cidade WHERE nome = " + nome;
+        try {
+            Statement statement = connection.createStatement();
+            
+            ResultSet resultSet = statement.executeQuery(query);
+            
+            if(resultSet.next()){
+                cidade = new Cidade(resultSet.getString("nome"));
+                cidade.setId(resultSet.getInt("id"));
+            } else {
+                cidade = null;
+            }
+
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CidadeDAOMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(CidadeDAOMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cidade;
+    }
+
 }

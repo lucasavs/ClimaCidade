@@ -5,7 +5,8 @@
  */
 package com.mycompany.climacidade;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 public class Temperatura {
     
     private float graus;
-    private LocalDate dataMedicao; //teste
+    private LocalDateTime dataMedicao; //teste
     private int cidade_id;
 
     public int getCidade_id() {
@@ -27,7 +28,7 @@ public class Temperatura {
     
     public Temperatura(float graus) {
         this.graus = graus;
-        this.dataMedicao = LocalDate.now();
+        this.dataMedicao = LocalDateTime.now();
     }
     
     public float getGraus(){
@@ -39,12 +40,21 @@ public class Temperatura {
     }
     
     public String getDataMedicao(){
-        return dataMedicao.toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dataMedicao.format(formatter);
+    }
+    
+    public void setDataMedicao(String dataMedicao){
+        this.dataMedicao = LocalDateTime.parse(dataMedicao);
     }
 
+    public void setDataMedicao(LocalDateTime dataMedicao){
+        this.dataMedicao = dataMedicao;
+    }
+    
     @Override
     public String toString() {
-        return "\"date\":\"" + dataMedicao + "\" ,\"temperature\":\"" + dataMedicao + "\" }" ;
+        return "{\"date\":\"" + getDataMedicao() + "\" ,\"temperature\":\"" + getGraus() + "\" }" ;
     }
     
     

@@ -7,6 +7,7 @@ package com.mycompany.climacidade;
 
 import com.mycompany.climacidade.climafonte.ClimaFonteopenweathermap;
 import com.mycompany.climacidade.dao.CidadeDAO;
+import com.mycompany.climacidade.dao.TemperaturaDAO;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.DELETE;
@@ -52,21 +53,28 @@ public class Controller {
      */
     @GET
     @Path("/cities/{param}/temperatures")
-    @Produces(MediaType.APPLICATION_JSON)
-    //@Produces("text/plain")
+    //@Produces(MediaType.APPLICATION_JSON)
+    @Produces("text/plain")
     public Response temperaturasCidade(@PathParam("param") String message){
         Cidade cidade;
         try {
             ClimaFonteopenweathermap climaFonte = new ClimaFonteopenweathermap();
-            cidade = climaFonte.getCidade(message);
+            cidade = climaFonte.getCidade(message); //buscando o nome da cidade na API, garantimos que sempre será buscado o mesmo nome
             
             CidadeDAO cidadeDAO = CidadeFactory.getBanco("MySQL");
-            cidadeDAO.createCidade(cidade);
+            cidade = cidadeDAO.getCidade(cidade.getNome());
+            
+            if(cidade == null){
+                throw new Exception("Cidade não encontrada!");
+            }
+            
+            TemperaturaDAO temperaturaDAO = TemperaturaFactory.getBanco("MySQL");
+            cidade.setTemperaturas(temperaturaDAO.getTemperaturasRecentes(cidade));
             
         } catch (Exception e) {
             return Response.status(500).entity(e.getMessage()).build();
         }
-        return Response.status(200).entity(cidade.getNome()).build();
+        return Response.status(200).entity(cidade.toString()).build();
     }
     
     /**

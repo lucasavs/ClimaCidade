@@ -23,7 +23,7 @@ public class AtualizacaoCron implements ServletContextListener {
 
     private Thread t = null;
     private ServletContext context;
-    private static final int TEMPO_ATUALIZACAO_TEMPERATURA = 10000; //dez segundos
+    private static final int TEMPO_ATUALIZACAO_TEMPERATURA = 600000; //dez minutos
 
     @Override
     public void contextInitialized(ServletContextEvent contextEvent) {

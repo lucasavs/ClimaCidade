@@ -5,11 +5,17 @@
  */
 package com.mycompany.climacidade.dao;
 
+import com.mycompany.climacidade.Cidade;
 import com.mycompany.climacidade.Temperatura;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +28,7 @@ public class TemperaturaDAOMySQL implements TemperaturaDAO{
     private final Connection connection;
     private static final String USUARIO_MYSQL = "root";
     private static final String SENHA_MYSQL = "root";
+    private static final String INTERVALO_RECENTES = "30 HOUR";
 
     /**
      *
@@ -36,7 +43,7 @@ public class TemperaturaDAOMySQL implements TemperaturaDAO{
         //System.out.println("Conectado com sucesso!");
     }
     
-    @Override
+   @Override
     public void createTemperatura(Temperatura temperatura) {
         try {
             Statement statement = connection.createStatement();
@@ -44,6 +51,27 @@ public class TemperaturaDAOMySQL implements TemperaturaDAO{
         } catch (SQLException ex) {
             Logger.getLogger(CidadeDAOMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public List<Temperatura> getTemperaturasRecentes(Cidade cidade) {
+        List<Temperatura> temperaturas = new ArrayList<>();
+        Temperatura temperatura;
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM temperatura WHERE cidade_id = " + cidade.getId() + " AND data_hora_registro > DATE_SUB(NOW(), INTERVAL " + INTERVALO_RECENTES +")");
+            
+            while(resultSet.next()){
+                temperatura = new Temperatura(resultSet.getFloat("grau"));
+                Timestamp dataMedicao = resultSet.getTimestamp("data_hora_registro");
+                temperatura.setDataMedicao(dataMedicao.toLocalDateTime());
+                temperaturas.add(temperatura);
+            }
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(CidadeDAOMySQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temperaturas;
     }
     
 }

@@ -19,4 +19,5 @@ public interface CidadeDAO {
     public void deleteTemperaturas(Cidade cidade);
     public List<Temperatura> getTemperatura (Cidade cidade);
     public List<Cidade> getCidades ();
+    public Cidade getCidade(String nome);
 }
