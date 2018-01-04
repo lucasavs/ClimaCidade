@@ -5,11 +5,13 @@
  */
 package com.mycompany.climacidade;
 
+import com.mycompany.climacidade.cepservice.CepService;
 import com.mycompany.climacidade.climafonte.ClimaFonte;
 import com.mycompany.climacidade.dao.CidadeDAO;
 import com.mycompany.climacidade.dao.TemperaturaDAO;
 import java.io.IOException;
 import java.util.List;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.DELETE;
@@ -21,7 +23,16 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/")
 public class Controller {
+@GET
+    @Path("/teste/")
+    @Produces("application/json; charset=UTF-8")
+    public String teste(){
+        return "jacaré";
 
+    }
+    
+    
+    
     @GET
     @Path("/hello/{param}")
     @Produces("text/plain")
@@ -163,15 +174,22 @@ public class Controller {
      * @param message
      * @return 
      */
-    /*
     @POST
     @Path("/cities/by_cep/{param}")
     @Produces("text/plain")
     public Response salvarCidadeByCEP(@PathParam("param") String message) {
         Cidade cidade;
         Cidade cidadeAntiga;
+        Cidade cidadeViaCep;
         try {
-            cidade = getCidadeAPI(message);
+            CepService cepService = CepServiceFactory.getCepService("ViaCep");
+            cidadeViaCep = cepService.getCidade(message);
+            
+            if(cidadeViaCep == null){
+                throw new Exception("CEP inválido!");
+            }
+            
+            cidade = getCidadeAPI(cidadeViaCep.getNome());
             
             CidadeDAO cidadeDAO = CidadeFactory.getCidadeDAO("MySQL");
             cidadeAntiga = cidadeDAO.getCidade(cidade.getNome());
@@ -185,7 +203,7 @@ public class Controller {
         }
         return Response.status(200).entity(cidade.getNome() + " salva com sucesso!").build();
     }
-    */
+    
     
     /**
      * Retorna uma Cidade preenchida com o nome padrão que é fornecido pela API.
@@ -196,13 +214,12 @@ public class Controller {
      */
     private Cidade getCidadeAPI(String nome) throws IOException, Exception{
         Cidade cidade;
-        //ClimaFonteopenweathermap climaFonte = new ClimaFonteopenweathermap();
         ClimaFonte climaFonte = ClimaFonteFactory.getClimaFonte("openWeatherMap");
-            cidade = climaFonte.getCidade(nome);
-            
-            if(cidade == null){
-                throw new Exception("Cidade não encontrada na API de climas!");
-            }
+        cidade = climaFonte.getCidade(nome);
+
+        if(cidade == null){
+            throw new Exception(nome + ": Cidade não encontrada na API de climas!");
+        }
         return cidade;
     }
 }
