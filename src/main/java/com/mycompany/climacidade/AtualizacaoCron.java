@@ -9,7 +9,7 @@ package com.mycompany.climacidade;
  *
  * @author Lucas
  */
-import com.mycompany.climacidade.climafonte.ClimaFonteopenweathermap;
+import com.mycompany.climacidade.climafonte.ClimaFonte;
 import com.mycompany.climacidade.dao.CidadeDAO;
 import com.mycompany.climacidade.dao.TemperaturaDAO;
 import java.time.LocalDateTime;
@@ -31,12 +31,12 @@ public class AtualizacaoCron implements ServletContextListener {
             @Override
             public void run() {
                 List<Cidade> listaCidades;
-                ClimaFonteopenweathermap climaFonte = new ClimaFonteopenweathermap();
                 Temperatura temperatura;
                 try {
+                    ClimaFonte climaFonte = ClimaFonteFactory.getClimaFonte("openWeatherMap");
                     while (true) {
-                        CidadeDAO cidadeDAO = CidadeFactory.getBanco("MySQL");
-                        TemperaturaDAO temperaturaDAO = TemperaturaFactory.getBanco("MySQL");
+                        CidadeDAO cidadeDAO = CidadeFactory.getCidadeDAO("MySQL");
+                        TemperaturaDAO temperaturaDAO = TemperaturaFactory.getTemperaturaDAO("MySQL");
                         listaCidades = cidadeDAO.getCidades();
                         
                         for (Cidade cidade : listaCidades) {

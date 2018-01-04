@@ -16,14 +16,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  *
  * @author Lucas
  */
-public class ClimaFonteopenweathermap implements ClimaFonteInterface {
+public class ClimaFonteopenweathermap implements ClimaFonte {
 
     private static final String OPENWEATHER_KEY = "bd4e72aabc90d2656d325985bee2e76f";
     private static final String OPENWEATHER_URL = "http://api.openweathermap.org/data/2.5/find?units=metric&appid="+OPENWEATHER_KEY+"&q=";
@@ -57,6 +56,13 @@ public class ClimaFonteopenweathermap implements ClimaFonteInterface {
         return cidade;
     }
 
+    /**
+     * Retorna a temperatura atual de uma cidade
+     * @param nomeBusca
+     * @return
+     * @throws IOException
+     * @throws MalformedURLException 
+     */
     @Override
     public Temperatura getTemperatura(String nomeBusca) throws IOException, MalformedURLException {
         String sURL = OPENWEATHER_URL + nomeBusca; //just a string

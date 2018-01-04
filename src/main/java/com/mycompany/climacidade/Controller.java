@@ -5,7 +5,7 @@
  */
 package com.mycompany.climacidade;
 
-import com.mycompany.climacidade.climafonte.ClimaFonteopenweathermap;
+import com.mycompany.climacidade.climafonte.ClimaFonte;
 import com.mycompany.climacidade.dao.CidadeDAO;
 import com.mycompany.climacidade.dao.TemperaturaDAO;
 import java.io.IOException;
@@ -45,14 +45,14 @@ public class Controller {
         try {
             cidade = getCidadeAPI(message);
             
-            CidadeDAO cidadeDAO = CidadeFactory.getBanco("MySQL");
+            CidadeDAO cidadeDAO = CidadeFactory.getCidadeDAO("MySQL");
             cidade = cidadeDAO.getCidade(cidade.getNome());
             
             if(cidade == null){
                 throw new Exception("Cidade não encontrada!");
             }
             
-            TemperaturaDAO temperaturaDAO = TemperaturaFactory.getBanco("MySQL");
+            TemperaturaDAO temperaturaDAO = TemperaturaFactory.getTemperaturaDAO("MySQL");
             cidade.setTemperaturas(temperaturaDAO.getTemperaturasRecentes(cidade));
             
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class Controller {
         try {
             cidade = getCidadeAPI(message);
             
-            CidadeDAO cidadeDAO = CidadeFactory.getBanco("MySQL");
+            CidadeDAO cidadeDAO = CidadeFactory.getCidadeDAO("MySQL");
             cidadeAntiga = cidadeDAO.getCidade(cidade.getNome());
             if(cidadeAntiga != null){
                 throw new Exception("Cidade já cadastrada!");
@@ -101,7 +101,7 @@ public class Controller {
         try {
             cidade = getCidadeAPI(message);
             
-            CidadeDAO cidadeDAO = CidadeFactory.getBanco("MySQL");
+            CidadeDAO cidadeDAO = CidadeFactory.getCidadeDAO("MySQL");
             cidadeDAO.deleteCidade(cidade);
             
         } catch (Exception e) {
@@ -123,14 +123,14 @@ public class Controller {
         try {
             cidade = getCidadeAPI(message);
             
-            CidadeDAO cidadeDAO = CidadeFactory.getBanco("MySQL");
+            CidadeDAO cidadeDAO = CidadeFactory.getCidadeDAO("MySQL");
             cidade = cidadeDAO.getCidade(cidade.getNome());
             
             if(cidade == null){
                 throw new Exception("Cidade não encontrada!");
             }
             
-            TemperaturaDAO temperaturaDAO = TemperaturaFactory.getBanco("MySQL");
+            TemperaturaDAO temperaturaDAO = TemperaturaFactory.getTemperaturaDAO("MySQL");
             temperaturaDAO.deleteTemperaturas(cidade);
             
         } catch (Exception e) {
@@ -150,7 +150,7 @@ public class Controller {
     @Produces("text/plain")
     public Response Temperaturas(@PathParam("param") String message) {
         try{
-            CidadeDAO cidadeDAO = CidadeFactory.getBanco("MySQL");
+            CidadeDAO cidadeDAO = CidadeFactory.getCidadeDAO("MySQL");
             List<Cidade> cidades = cidadeDAO.getTemperaturasAtuais();
             return Response.status(200).entity(cidades.toString()).build();
         } catch (Exception e) {
@@ -158,9 +158,46 @@ public class Controller {
         }        
     }
     
+    /**
+     * Permitir que seja possível cadastrar uma cidade a partir de um determinado CEP.
+     * @param message
+     * @return 
+     */
+    /*
+    @POST
+    @Path("/cities/by_cep/{param}")
+    @Produces("text/plain")
+    public Response salvarCidadeByCEP(@PathParam("param") String message) {
+        Cidade cidade;
+        Cidade cidadeAntiga;
+        try {
+            cidade = getCidadeAPI(message);
+            
+            CidadeDAO cidadeDAO = CidadeFactory.getCidadeDAO("MySQL");
+            cidadeAntiga = cidadeDAO.getCidade(cidade.getNome());
+            if(cidadeAntiga != null){
+                throw new Exception("Cidade já cadastrada!");
+            }
+            cidadeDAO.createCidade(cidade);
+            
+        } catch (Exception e) {
+            return Response.status(500).entity(e.getMessage()).build();
+        }
+        return Response.status(200).entity(cidade.getNome() + " salva com sucesso!").build();
+    }
+    */
+    
+    /**
+     * Retorna uma Cidade preenchida com o nome padrão que é fornecido pela API.
+     * @param nome
+     * @return
+     * @throws IOException
+     * @throws Exception 
+     */
     private Cidade getCidadeAPI(String nome) throws IOException, Exception{
         Cidade cidade;
-        ClimaFonteopenweathermap climaFonte = new ClimaFonteopenweathermap();
+        //ClimaFonteopenweathermap climaFonte = new ClimaFonteopenweathermap();
+        ClimaFonte climaFonte = ClimaFonteFactory.getClimaFonte("openWeatherMap");
             cidade = climaFonte.getCidade(nome);
             
             if(cidade == null){

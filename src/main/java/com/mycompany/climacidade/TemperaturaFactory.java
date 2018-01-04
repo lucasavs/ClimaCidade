@@ -13,7 +13,13 @@ import com.mycompany.climacidade.dao.TemperaturaDAOMySQL;
  * @author Lucas
  */
 public class TemperaturaFactory {
-    public static TemperaturaDAO getBanco (String banco) throws Exception{
+    /**
+     * Retorna um novo TemperaturaDAO
+     * @param banco
+     * @return
+     * @throws Exception 
+     */
+    public static TemperaturaDAO getTemperaturaDAO (String banco) throws Exception{
         try{
             if ("MySQL".equals(banco)){
                 return new TemperaturaDAOMySQL();

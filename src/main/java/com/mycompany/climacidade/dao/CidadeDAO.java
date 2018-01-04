@@ -6,7 +6,6 @@
 package com.mycompany.climacidade.dao;
 
 import com.mycompany.climacidade.Cidade;
-import com.mycompany.climacidade.Temperatura;
 import java.util.List;
 
 /**

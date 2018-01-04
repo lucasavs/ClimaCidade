@@ -14,12 +14,12 @@ import com.mycompany.climacidade.dao.CidadeDAOMySQL;
  */
 public class CidadeFactory {
     /**
-     * 
+     * Retorna um novo CidadeDAO
      * @param banco
      * @return
      * @throws Exception 
      */
-    public static CidadeDAO getBanco (String banco) throws Exception{
+    public static CidadeDAO getCidadeDAO (String banco) throws Exception{
         try{
             if ("MySQL".equals(banco)){
                 return new CidadeDAOMySQL();

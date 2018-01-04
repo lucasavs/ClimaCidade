@@ -39,6 +39,10 @@ public class Temperatura {
         this.graus = graus;
     }
     
+    /**
+     * Retorna uma String com a data e hora da medição no formato "yyyy-MM-dd HH:mm:ss"
+     * @return 
+     */
     public String getDataMedicao(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return dataMedicao.format(formatter);
@@ -52,6 +56,10 @@ public class Temperatura {
         this.dataMedicao = dataMedicao;
     }
     
+    /**
+     * Retorna uma string JSON com um objeto com a temperatura e a data da medição
+     * @return 
+     */
     @Override
     public String toString() {
         return "{\"date\":\"" + getDataMedicao() + "\" ,\"temperature\":\"" + getGraus() + "\" }" ;

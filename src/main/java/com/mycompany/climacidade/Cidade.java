@@ -49,15 +49,14 @@ public class Cidade {
      * @return 
      */
     public String toString(){
-        //String stringArrayTemperaturas = ""; 
-        /*
-        for(Temperatura temperatura : temperaturas){
-            stringArrayTemperaturas += "\"date\" : \"" + temperatura.getDataMedicao() + "\", \"temperature\" : \"" + temperatura.getGraus() + "\"";
-        }
-        */
+
         return "{\"name\":\""+getNome()+"\", \"temperature\":" + temperaturasToString() + "}";
     }
     
+    /**
+     * Retorna um array de json com todas as temperaturas formatas
+     * @return 
+     */
     private String temperaturasToString (){
         return String.join(",", temperaturas.toString());
     }
