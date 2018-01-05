@@ -49,7 +49,7 @@ public class CidadeDAOMySQL implements CidadeDAO {
     public void createCidade(Cidade cidade) {
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO CIDADE (nome) VALUES (" + cidade.getNome() + ")");
+            statement.executeUpdate("INSERT INTO CIDADE (nome) VALUES (\""  + cidade.getNome() + "\")");
         } catch (SQLException ex) {
             Logger.getLogger(CidadeDAOMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -58,14 +58,19 @@ public class CidadeDAOMySQL implements CidadeDAO {
     /**
      *
      * @param cidade
+     * @throws java.lang.Exception
      */
     @Override
-    public void deleteCidade(Cidade cidade) {
+    public void deleteCidade(Cidade cidade) throws Exception {
         try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("DELETE FROM CIDADE WHERE nome = " + cidade.getNome());
+            int linhasAfetadas = statement.executeUpdate("DELETE FROM CIDADE WHERE nome = \"" + cidade.getNome() + "\"");     
+            if (linhasAfetadas == 0){
+                throw new Exception("Não foi possível deletar a cidade. Favor verificar se ela encontra-se inserida no banco");
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(CidadeDAOMySQL.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+            //Logger.getLogger(CidadeDAOMySQL.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -134,7 +139,7 @@ public class CidadeDAOMySQL implements CidadeDAO {
     @Override
     public Cidade getCidade(String nome) {
         Cidade cidade = null;
-        String query = "SELECT nome, id FROM cidade WHERE nome = " + nome;
+        String query = "SELECT nome, id FROM cidade WHERE nome = \"" + nome + "\"";
         try {
             Statement statement = connection.createStatement();
             

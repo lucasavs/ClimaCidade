@@ -53,7 +53,7 @@ public class ClimaFonteopenweathermap implements ClimaFonte {
             return null;
         }
         
-        String nomeCidadeRetornoFormatada = rootobj.getAsJsonArray("list").get(0).getAsJsonObject().get("name").toString();
+        String nomeCidadeRetornoFormatada = rootobj.getAsJsonArray("list").get(0).getAsJsonObject().get("name").getAsString();
         String nomeCidade = URLDecoder.decode(nomeCidadeRetornoFormatada, "UTF-8");
         
         Cidade cidade = new Cidade (nomeCidade);

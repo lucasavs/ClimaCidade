@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface CidadeDAO {
     public void createCidade(Cidade cidade);
-    public void deleteCidade(Cidade cidade);
+    public void deleteCidade(Cidade cidade) throws Exception;
     public List<Cidade> getTemperaturasAtuais ();
     public List<Cidade> getCidades ();
     public Cidade getCidade(String nome);

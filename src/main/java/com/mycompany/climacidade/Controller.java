@@ -11,7 +11,6 @@ import com.mycompany.climacidade.dao.CidadeDAO;
 import com.mycompany.climacidade.dao.TemperaturaDAO;
 import java.io.IOException;
 import java.util.List;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.DELETE;
@@ -49,8 +48,8 @@ public class Controller {
      */
     @GET
     @Path("/cities/{param}/temperatures")
-    //@Produces(MediaType.APPLICATION_JSON)
-    @Produces("text/plain")
+    @Produces(MediaType.APPLICATION_JSON)
+    //@Produces("text/plain")
     public Response temperaturasCidade(@PathParam("param") String message){
         Cidade cidade;
         try {
@@ -60,7 +59,7 @@ public class Controller {
             cidade = cidadeDAO.getCidade(cidade.getNome());
             
             if(cidade == null){
-                throw new Exception("Cidade não encontrada!");
+                throw new Exception("{\"status\" : \"Cidade não encontrada!\"}");
             }
             
             TemperaturaDAO temperaturaDAO = TemperaturaFactory.getTemperaturaDAO("MySQL");
@@ -158,7 +157,8 @@ public class Controller {
      */
     @GET
     @Path("/temperatures")
-    @Produces("text/plain")
+    @Produces(MediaType.APPLICATION_JSON)
+    //@Produces("text/plain")
     public Response Temperaturas(@PathParam("param") String message) {
         try{
             CidadeDAO cidadeDAO = CidadeFactory.getCidadeDAO("MySQL");
